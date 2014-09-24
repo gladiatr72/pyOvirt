@@ -17,7 +17,7 @@ VERSION = '.'.join(str(x) for x in pyOvirt.__version__)
 
 packages=find_packages()
 
-setup(name='saltovirt',
+setup(name='pyOvirt',
       version=VERSION,
       description='A python2[567] library for manipulating ovirt/rhev-m virtualization managers',
       author=__AUTHOR__,
