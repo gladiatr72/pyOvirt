@@ -9,11 +9,11 @@ except ImportError:
 __AUTHOR__ = 'Stephen Spencer'
 __AUTHOR_EMAIL__ = 'gladiatr72@gmail.com'
 
-#readme = open('README.rst').read() + '\n\n' + open('CHANGELOG.rst').read()
+readme = open('README.rst').read() + '\n\n' + open('CHANGELOG.rst').read()
 
 import pyOvirt
 
-VERSION = '.'.join(str(x) for x in saltovirt.__version__)
+VERSION = '.'.join(str(x) for x in pyOvirt.__version__)
 
 packages=find_packages()
 

@@ -34,7 +34,7 @@ __all__ = [
     'list_vms_cooking',
 ]
 
-from .saltovirt import (
+from .pyovirt import (
     list_vms,
     list_vms_up,
     list_vms_down,
