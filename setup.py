@@ -39,5 +39,10 @@ setup(name='pyOvirt',
           'Programming Language :: Python :: 2.6',
           'Programming Language :: Python :: 2.7',
       ],
+      extras_require={
+          'wrapt >= 1.9.0': [],
+          'salt >= 2014.1.11': [],
+          'ovirtsdk': [],
+      },
     )
 
