@@ -18,30 +18,14 @@ import re
 __version__ = 0, 0, 1
 
 
-export = '''
-    list_vms
-    list_vms_up
-    list_vms_down
-    list_vms_cooking
-    '''
+from .pyOvirt import *
 
-#__all__ = re.split(r'\s+', export)
-
-__all__ = [ 
+__all__ = [
     'list_vms',
-    'list_vms_up'
+    'list_vms_up',
     'list_vms_down',
     'list_vms_cooking',
 ]
-
-from .pyovirt import (
-    list_vms,
-    list_vms_up,
-    list_vms_down,
-    list_vms_cooking,
-)
-
-
 
 try:
     import wrapt
