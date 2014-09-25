@@ -16,7 +16,7 @@ class memdecay(object):
 
     def _hash_gen(self, args, kwargs):
         kw_key = tuple([ 
-            '{}:{}'.format(kw, kwargs[kw]) 
+            '{0}:{1}'.format(kw, kwargs[kw]) 
                 for kw in copy.copy(kwargs)])
         return hash((kw_key, args))
 
