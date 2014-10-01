@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from engine import get_bits
+from ..nuts.danglies import get_bits
 from ..memdecay import memdecay
 
 

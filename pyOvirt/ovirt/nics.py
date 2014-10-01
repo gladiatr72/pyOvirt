@@ -5,8 +5,12 @@ import re
 from ..nuts.danglies import get_bits
 from ..memdecay import memdecay
 from ..bolts.config import list_managers, get_alias, get_mc
-from ..ovirt.actions import p_async
 
+
+def get_nic_info(nic):
+    ''' return interesting little bits of information of a vnic '''
+
+    pass
 
 def list_vms(manager='', filter=None, max=0):
     ''' Return the names of configured ovirt guests as well as the name of its
@@ -53,23 +57,8 @@ def list_vms(manager='', filter=None, max=0):
 
 
 def get_vm(manager=None, name=None, id=None):
-    handle = get_conn(manager)
-    if not handle:
+    if manager not in get_mc():
         return False
-
-    if name:
-        qterm = { 'name': name }
-    elif id:
-        qterm = { 'id': id }
-    else:
-        return False
-
-    vm = handle.connection.vms.get(**qterm)
-    disks = vm.disks.list()
-    nics = vm.nics.list()
-
-    
-
 
 def list_vms_up(**kwargs):
     ''' 

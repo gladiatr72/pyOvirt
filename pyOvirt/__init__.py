@@ -25,6 +25,10 @@ __all__ = [
     'list_vms_up',
     'list_vms_down',
     'list_vms_cooking',
+    'get_vm',
+    'list_disks',
+    'unattached_disks',
+
 ]
 
 try:

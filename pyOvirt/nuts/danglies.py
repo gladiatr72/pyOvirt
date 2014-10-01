@@ -22,7 +22,7 @@ def check_manager(manager):
     if not manager or not get_conn(manager):
         return False
     else:
-        return True
+        return get_conn(manager)
 
 def _bit_types(handle):
     bit_types = dict([(t, handle.connection.__dict__[t]) 

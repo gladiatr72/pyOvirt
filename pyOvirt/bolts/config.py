@@ -4,8 +4,6 @@ from __future__ import print_function
 import salt.config
 import copy
 
-__all__ = 'get_mc list_managers get_alias check_manager'.split(' ')
-
 def get_mc():
     '''
     retrieve the ovirt bits from the master config
@@ -63,15 +61,13 @@ def get_alias(manager):
     if not manager:
         return False
 
-    if 'alias' in get_mc()[manager]:
-        return get_mc()[manager]['alias']
-    else:
+    config = dict([ (t, get_mc()[t]) for t in get_mc() if t != 'default' ]) 
+    alias = [ config[t]['alias'] for t in config if 'alias' in config[t] ]
+
+    if manager in alias:
         return manager
+    elif manager in config:
+        if 'alias' in  config[manager]:
+            return config[manager]['alias']
 
-
-def check_manager(manager):
-    if not manager or not get_conn(manager):
-        return False
-    else:
-        return True
-
+    return False
