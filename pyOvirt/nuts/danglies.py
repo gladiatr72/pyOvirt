@@ -18,6 +18,8 @@ from ..memdecay import memdecay
 log = logging.getLogger(__name__)
 
 
+
+
 def check_manager(manager):
     if not manager or not get_conn(manager):
         return False
@@ -67,10 +69,10 @@ def get_bits(*args, **kwargs):
     max = args[3]
     cmds = args[4:]
 
-    if check_manager(manager):
-        handle = get_conn(manager)
-    else:
+    if not check_manager(manager):
         return False
+    else:
+        handle = check_manager(manager) 
 
     if bit_type not in _bit_types(handle):
         raise NameError("No bits by that name here: {0}".format(bit_type))
