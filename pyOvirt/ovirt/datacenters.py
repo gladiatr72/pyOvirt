@@ -81,6 +81,56 @@ def _is_ovirt_cap_obj(thing):
     else:
         return False
 
+def _derive_prime_key(things):
+    ''' 
+    find the property of the ovirt object that is common within a collection.
+    Collections are lists of ovirt objects.
+
+    Returns a string
+    '''
+
+    # the properties/methods/misc bits attached to these objects that are
+    # either REST-related or simply not object-specific
+
+    re_keyhunt = re.compile(r'^(export|gds_|[gs]et_|.*class|tz|url|_|.*link|build|factory|href|description|Tag|has)')
+
+    # the potential properties
+    targets = [ (n, t.__dict__[n] )
+                for t in things 
+                for n in dir(t) 
+                    if not re_keyhunt.search(n)
+                        and t.__dict__[n] is not None
+                        and not _is_ovirt_cap_obj(t.__dict__[n]) ]
+
+    keylist = [ t[0] for t in targets]
+
+    keys = list(set(keylist))
+
+    if len(keylist) == 1:
+        return keylist[0]
+    elif len(keylist) == 0:
+        return None
+    
+    keycount={}
+
+    for k in keys:
+        keycount[k] = len([ t for t in keylist if t == k ])
+
+    keymax = max(keycount.values())
+
+    if sum(keycount.values()) / keymax == 1:
+        retval = [ k for k in keycount if keycount[k] == keymax ][0]
+    else:
+        # oops. we have > 1 keys that are present with the same dispersement
+        vallist = dict([ (t[1], t[0]) for t in targets ])
+        valcount= dict([ (k, 0) for k in keys ])
+
+        for v in vallist:
+            valcount[vallist[v]] += 1 
+
+        retval = [ t[0] for t in valcount.items() if t[1] == len(things)][0] 
+
+    return retval
 
 @memdecay()
 def get_caps(manager=None, name=None, id=None):
@@ -119,6 +169,12 @@ def get_caps(manager=None, name=None, id=None):
             capobject = capf[member]
 
             if _is_ovirt_cap_obj(capobject):
+                if isinstance(capobject.__dict__, list):
+                    if _is_ovirt_cap_obj(capobject.__dict__[0]):
+                        prime_key = _derive_prime_key(capobject.__dict__) 
+
+                        
+
                 cap_dict.update(capobject.__dict__)
             else:
                 cap_dict.update({ capname: capobject})
@@ -127,7 +183,10 @@ def get_caps(manager=None, name=None, id=None):
 
 def get_cap(manager=None, name=None, id=None, capability=None):
     if capability:
-        return get_caps(manager=manager, name=name, id=id)[capability]
+        retval = get_caps(manager=manager, name=name, id=id)
+        if isinstance(retval, list):
+            if _is_ovirt_cap_obj(retval[0]):
+                retval = [ t.id for t in retval ]
     else:
         return get_caps(manager=manager, name=name, id=id)
 
