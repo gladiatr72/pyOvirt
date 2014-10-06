@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from vms import *
+from actions import *
+from clusters import *
+from datacenters import *
 from disks import *
-import re
-
+from nics import *
+from storagedomains import *
+from vms import *
