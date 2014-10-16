@@ -3,12 +3,13 @@
 import re
 
 from ..nuts.danglies import get_bits
+from ..nuts.actions import p_async
 from ..memdecay import memdecay
 from ..bolts.config import list_managers, get_alias, get_mc
-from ..ovirt.actions import p_async
+from ..bolts.connection import get_conn
 
 
-def list_vms(manager='', filter=None, max=0):
+def list_vms(manager='', filter=None, max=0, **kwargs):
     ''' Return the names of configured ovirt guests as well as the name of its
     ovirt/rhev-m manager.
 
@@ -35,7 +36,7 @@ def list_vms(manager='', filter=None, max=0):
         salt '*' ovirt.list_vms filter='name=dr-* and host=hyper-1-0*.mn'
 
     '''
-
+    
     managers = [ get_alias(t) for t in list_managers() if re.search(manager, t) ]
 
     retval = {}
@@ -52,7 +53,7 @@ def list_vms(manager='', filter=None, max=0):
     return retval
 
 
-def get_vm(manager=None, name=None, id=None):
+def get_vm(manager=None, name=None, id=None, **kwargs):
     handle = get_conn(manager)
     if not handle:
         return False
@@ -67,7 +68,6 @@ def get_vm(manager=None, name=None, id=None):
     vm = handle.connection.vms.get(**qterm)
     disks = vm.disks.list()
     nics = vm.nics.list()
-
     
 
 

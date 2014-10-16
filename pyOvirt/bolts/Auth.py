@@ -61,10 +61,21 @@ class ovirtAuth(object):
     """
 
     _connections={}
+    log = None
 
     def __init__(self, 
                  username=None, password=None, 
-                 url=None, ca_file=None, connection_name=None):
+                 url=None, ca_file=None, connection_name=None, **kwargs):
+
+        if 'logger' in kwargs:
+            self.log = kwargs['logger']
+        elif not self.log:
+            self.log = logging.getLogger(__name__)
+
+        if '__context__' in kwargs:
+            self.__context__ = kwargs['__context__']
+            self.log.info('context via {}: {}'.format(__name__, self.__context__))
+
 
         self._connection_name=None
         self._illegals=[]
@@ -111,6 +122,7 @@ class ovirtAuth(object):
 
                 ovirtAuth._connections[self._connection_name] =  self._connection
                 self._ping = _authPersist(self, name=self._id)
+                self._ping.daemon = True
                 self._ping.start()
 
             except ( ConnectionError, NoCertificatesError, ImmutableError, 
